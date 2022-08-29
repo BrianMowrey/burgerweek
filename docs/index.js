@@ -35,9 +35,12 @@ function initMap() {
         console.log('recipe=%o', recipe)
         var html = '<img src="images/burgers/resized/' + recipe.id + '.jpg" align="left">';
         html += "<b>"+recipe.name+"</b><br>"+recipe.description;
+        html += "<br>Price: <b>$" + recipe.price + "</b>";
         html += "<br>" + recipe.restaurant.name;
         html += "<br>" + recipe.location.address;
-        html += "<br><a class='normal_link' rel='noreferrer' href='"+recipe.urls.single+"'>leburgerweek</a>";
+        html += '<br><a target="_blank" rel="noopener noreferrer" href="'+recipe.urls.single+'">leburgerweek</a>';
+        html += ' <a target="_blank" rel="noopener noreferrer" href="'+recipe.location.google_maps_url + '">map</a>';
+
         infowindow.setContent(html);
         infowindow.setPosition(event.latLng);
         infowindow.setOptions({pixelOffset: new google.maps.Size(0,-34)});
