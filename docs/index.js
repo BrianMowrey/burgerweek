@@ -31,15 +31,24 @@ function initMap() {
     map.data.addListener('click', function(event) {
         var feat = event.feature;
         var recipe = feat.getProperty('recipe');
-        
-        console.log('recipe=%o', recipe)
-        var html = '<img src="images/burgers/resized/' + recipe.id + '.jpg" align="left">';
-        html += "<b>"+recipe.name+"</b><br>"+recipe.description;
-        html += "<br>Price: <b>$" + recipe.price + "</b>";
-        html += "<br>" + recipe.restaurant.name;
-        html += "<br>" + recipe.location.address;
-        html += '<br><a target="_blank" rel="noopener noreferrer" href="'+recipe.urls.single+'">leburgerweek</a>';
-        html += ' <a target="_blank" rel="noopener noreferrer" href="'+recipe.location.google_maps_url + '">map</a>';
+        var address = recipe.location.address.replaceAll(',', '<br>');
+
+        // this is super ugly, maybe some templating next time?
+        var html = '<div class="burger_info"><img src="images/burgers/resized/' + recipe.id + '.jpg">';
+        html += '<div class="description">';
+        html += '<h3 class="recipe-name">'+recipe.name+"</h3>";
+        html += '<p class="recipe-description">'+recipe.description+'</p>';
+        html += '<div class="row">'
+        html += '<div class="column">';
+        html += '<p class="restaurant"><strong>' + recipe.restaurant.name + '</strong>';
+        html += '<br>' + address + '</p>';
+        html += '<a class="burgerweek" target="_blank" rel="noopener noreferrer" href="'+recipe.urls.single+'">leburgerweek</a>';
+        html += '</div>';
+        html += '<div class="column right">';
+        html += 'Price: <b>' + parseFloat(recipe.price).toLocaleString('en-CA', {style: 'currency', currency: 'CAD'}) + "</b>";
+        html += '<br><a class="maps-link" target="_blank" rel="noopener noreferrer" href="'+recipe.location.google_maps_url + '">map</a>';
+        html += '</div></div>'; // /column/row
+        html += '</div>'; // /description
 
         infowindow.setContent(html);
         infowindow.setPosition(event.latLng);
